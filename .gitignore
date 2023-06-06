@@ -1,4 +1,5 @@
 .editorconfig
 .env
 .eslintrc.js
+note.txt
 node_modules/
