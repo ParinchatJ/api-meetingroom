@@ -1,6 +1,6 @@
 const express = require('express')
 const bookingRoute = express.Router()
 
-bookingRoute.get()
+// bookingRoute.get()
 
 module.exports = bookingRoute

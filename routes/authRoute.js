@@ -1,7 +1,10 @@
 const express = require('express')
 const authRoute = express.Router()
 
-authRoute.post()
-authRoute.post()
+// register
+// authRoute.post()
+
+// login
+// authRoute.post()
 
 module.exports = authRoute

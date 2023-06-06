@@ -1,6 +1,6 @@
 const express = require('express')
 const roomRoute = express.Router()
 
-roomRoute.get()
+// roomRoute.get()
 
 module.exports = roomRoute
