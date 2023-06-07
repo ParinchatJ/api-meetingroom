@@ -16,6 +16,7 @@ app.use(cookieParser())
 
 // session
 const session = require('express-session')
+app.set('trust proxy', 1)
 app.use(session({
   cookie: {
     maxAge: ms('4h'),
