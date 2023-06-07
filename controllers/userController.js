@@ -4,15 +4,11 @@ const { v4: uuidv4 } = require('uuid')
 
 // register
 const createUser = async (req, res, next) => {
-  const { username, email, password, password2, isAdmin } = req.body ?? {}
+  const { username, email, password, isAdmin } = req.body
 
   try {
-    if (!username || !email || !password || !password2 || !isAdmin) {
+    if (!username || !email || !password || !isAdmin) {
       return res.status(400).json({ message: 'incomplete information' })
-      // .redirect('/auth/register')
-    }
-    if (password !== password2) {
-      return res.status(400).json({ message: 'Your password is not match!' })
       // .redirect('/auth/register')
     }
 
@@ -24,7 +20,6 @@ const createUser = async (req, res, next) => {
       username: username,
       email: email,
       password: hash,
-      password2: hash,
       isAdmin: isAdmin
     })
 
@@ -38,16 +33,18 @@ const createUser = async (req, res, next) => {
 
 // login
 const loginUser = async (req, res) => {
-  const { username, password } = req.body ?? {}
+  const { username, password, email } = req.body
 
   try {
-    const user = await UserModel.findOne({ username: username })
+    const user = await UserModel.findOne({
+      $or: [{ username: username }, { email: email }]
+    }).select('+password')
 
     if (user) {
       await bcrypt.compare(password, user.password, function (err, result) {
         if (result) {
           req.session.user_id = user.user_id
-          console.log(req.session.user_id)
+          // console.log(req.session.user_id)
           res.json({
             email: user.email,
             username: user.username
