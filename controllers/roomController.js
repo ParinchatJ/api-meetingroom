@@ -7,7 +7,7 @@ const createRoom = async (req, res) => {
     const user = await UserModel.findOne({
       user_id: req.user.user_id
     })
-    console.log(req.session.user_id)
+    console.log(user, 'here')
     if (!req.body.room_name || !req.body.max_capacity) {
       return res.status(400).json({ message: 'incomplete information' })
     }

@@ -3,9 +3,12 @@ const roomRoute = express.Router()
 
 // middleware check session and admin
 const authSession = require('../middleware/mustLogin')
+const isAdminCheck = require('../middleware/adminCheck')
+
+roomRoute.use(authSession)
 
 const roomController = require('../controllers/roomController')
-roomRoute.post('/create', authSession, roomController.createRoom)
+roomRoute.post('/create', isAdminCheck, roomController.createRoom)
 
 roomRoute.get('/all', roomController.getAllRoom)
 

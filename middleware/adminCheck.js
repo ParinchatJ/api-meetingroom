@@ -1,5 +1,10 @@
+const UserModel = require('../models/userModel')
+
 const isAdminCheck = async (req, res, next) => {
-  if (!req.session.isAdmin) return res.status(401).json({ message: 'You dont have permission to access (not admin)' })
+  const user = await UserModel.findOne({
+    user_id: req.user.user_id
+  })
+  if (user.isAdmin === false) return res.status(401).json({ message: 'You dont have permission to access (not admin)' })
   next()
 }
 
