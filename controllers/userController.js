@@ -1,4 +1,4 @@
-const UserModel = require('../models/userSchema')
+const UserModel = require('../models/userModel')
 const bcrypt = require('bcryptjs')
 const { v4: uuidv4 } = require('uuid')
 
@@ -7,7 +7,7 @@ const createUser = async (req, res, next) => {
   const { username, email, password, isAdmin } = req.body
 
   try {
-    if (!username || !email || !password || !isAdmin) {
+    if (!username || !email || !password) {
       return res.status(400).json({ message: 'incomplete information' })
       // .redirect('/auth/register')
     }
@@ -45,7 +45,8 @@ const loginUser = async (req, res) => {
         if (result) {
           req.session.user_id = user.user_id
           // console.log(req.session.user_id)
-          res.json({
+          res.status(200).json({
+            message: 'Login success!',
             email: user.email,
             username: user.username
           })

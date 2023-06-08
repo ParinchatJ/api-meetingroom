@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const roomSchema = new mongoose.Schema({
   owner_created: {
-    type: String,
-    required: true
+    type: String
   },
   room_name: {
     type: String,
