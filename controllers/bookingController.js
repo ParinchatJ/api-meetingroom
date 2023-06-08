@@ -18,19 +18,19 @@ const bookingmtroom = async (req, res) => {
     user_id: req.user.user_id
   })
 
-  if (!req?.params?.idnew) {
+  if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'
     })
   }
 
   // find id room to booking
-  const roomID = await RoomModel.findOne({ _id: req.params.idnew }).exec()
+  const roomID = await RoomModel.findOne({ _id: req.params.roomId }).exec()
   // cant find ID match
   if (!roomID) {
     return res
       .status(204)
-      .json({ message: `No Post match ID ${req.params.idnew}.` })
+      .json({ message: `No Post match ID ${req.params.roomId}.` })
   }
 
   // booking
@@ -54,19 +54,19 @@ const bookingCancel = async (req, res) => {
     user_id: req.user.user_id
   })
 
-  if (!req?.params?.idcancel) {
+  if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'
     })
   }
 
   // delete
-  const booking = await BookingModel.findOne({ room_selectedID: req.params.idcancel })
+  const booking = await BookingModel.findOne({ room_selectedID: req.params.roomId })
   if (booking.owner !== user.user_id) {
     res.status(204).json({ message: 'Its not your post. Cant cancel!' })
   }
 
-  await BookingModel.deleteOne({ room_selectedID: req.params.idcancel })
+  await BookingModel.deleteOne({ room_selectedID: req.params.roomId })
   res.status(200).json({ message: 'Room has been deleted' })
 }
 

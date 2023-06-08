@@ -1,5 +1,6 @@
 const UserModel = require('../models/userModel')
 const RoomModel = require('../models/roomModel')
+const bookingModel = require('../models/bookingModel')
 const { v4: uuidv4 } = require('uuid')
 
 // post
@@ -36,51 +37,30 @@ const getAllRoom = async (req, res) => {
   }
 }
 
-// get one
-const getRoomById = async (req, res) => {
+// get avilable room
+const avilableRoom = async (req, res) => {
   try {
-    if (!req?.params?.id) {
-      return res.status(400).json({
-        message: 'ID parameter is required.'
-      })
-    }
+    // query room is avilable
+    const booking = await bookingModel.find({
+      $or: [
+        { range_time: { $gt: req.body.range_time }},
+        { range_time: { $lt: req.body.range_time }}
+      ],
+      date: req.body.date
+    })
+      .sort([['room_name', -1]])
 
-    const roomID = await RoomModel.findOne({ _id: req.params.id }).exec()
-    // cant find ID match
-    if (!roomID) {
-      return res
-        .status(204)
-        .json({ message: `No Post match ID ${req.params.id}.` })
-    }
-
-    res.status(200).json(roomID)
+    console.log(booking)
+    res.status(200).json(booking)
   } catch (error) {
-    console.log(`Error in getroombyid : ${error}`)
+    console.log(`Error in avilableRoom : ${error}`)
   }
 }
-
-// get avilable room
-// const avilableRoom = async (req, res) => {
-//   try {
-//     const roomID = await RoomModel.find({ status: { $eq: false } }).exec()
-//     if (!roomID) {
-//       return res
-//         .status(204)
-//         .json({ message: 'No room is avilable' })
-//     }
-
-//     res.status(200).json(roomID)
-//   } catch (error) {
-//     console.log(`Error in getroombyid : ${error}`)
-//   }
-// }
 // patch
 // delete
-
-// isAdmin = true
 
 module.exports = {
   createRoom,
   getAllRoom,
-  getRoomById
+  avilableRoom
 }

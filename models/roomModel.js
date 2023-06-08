@@ -14,10 +14,7 @@ const roomSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean
-  },
-  meeting_booking: [{ range_time: Number, unavailableDates: { type: [Date] } }]
-},
-{ timestamps: true }
-)
+  }
+})
 
 module.exports = new mongoose.model('createRoom', roomSchema)

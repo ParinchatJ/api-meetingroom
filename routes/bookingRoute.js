@@ -11,9 +11,9 @@ const bookingController = require('../controllers/bookingController')
 bookingRoute.get('/all', bookingController.getAllBooking)
 
 // booking room
-bookingRoute.post('/:idnew', bookingController.bookingmtroom)
+bookingRoute.post('/:roomId', bookingController.bookingmtroom)
 
 // cancel room
-bookingRoute.delete('/:idcancel', bookingController.bookingCancel)
+bookingRoute.delete('/:roomId', bookingController.bookingCancel)
 
 module.exports = bookingRoute
