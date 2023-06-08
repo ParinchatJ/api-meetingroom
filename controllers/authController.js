@@ -9,7 +9,6 @@ const createUser = async (req, res, next) => {
   try {
     if (!username || !email || !password) {
       return res.status(400).json({ message: 'incomplete information' })
-      // .redirect('/auth/register')
     }
 
     const salt = bcrypt.genSaltSync(10)
@@ -25,28 +24,28 @@ const createUser = async (req, res, next) => {
 
     req.session.user_id = newUser.user_id
     res.status(200).json(newUser)
-    // .redirect('/auth/login')
   } catch (error) {
-    console.log('Something error in createUser: ', error)
+    console.log('Error in createUser: ', error)
   }
 }
 
 // login
 const loginUser = async (req, res) => {
-  const { username, password, email } = req.body
+  const { username, password } = req.body
 
   try {
     const user = await UserModel.findOne({
-      $or: [{ username: username }, { email: email }]
+      $or: [{ username: username }]
     }).select('+password')
 
     if (user) {
       await bcrypt.compare(password, user.password, function (err, result) {
         if (result) {
           req.session.user_id = user.user_id
-          // console.log(req.session.user_id)
+          console.log(req.session)
           res.status(200).json({
             message: 'Login success!',
+            user_id: req.session.user_id,
             email: user.email,
             username: user.username
           })

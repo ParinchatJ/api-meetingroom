@@ -12,7 +12,7 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  unavailableDates: { type: [Date] }
+  meeting_booking: [{ range_time: Number, unavailableDates: { type: [Date] }}]
 },
 { timestamps: true }
 )
