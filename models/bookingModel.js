@@ -5,12 +5,10 @@ const bookingSchema = new mongoose.Schema({
     type: String
   },
   room_selected: {
-    type: String,
-    required: true
+    type: String
   },
-  date: {
-    type: Date,
-    required: true
+  room_selectedID: {
+    type: String
   },
   range_time: {
     type: Number,

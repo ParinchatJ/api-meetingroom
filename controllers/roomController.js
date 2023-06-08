@@ -1,5 +1,6 @@
 const UserModel = require('../models/userModel')
 const RoomModel = require('../models/roomModel')
+const { v4: uuidv4 } = require('uuid')
 
 // post
 const createRoom = async (req, res) => {
@@ -7,12 +8,13 @@ const createRoom = async (req, res) => {
     const user = await UserModel.findOne({
       user_id: req.user.user_id
     })
-    console.log(user, 'here')
+
     if (!req.body.room_name || !req.body.max_capacity) {
       return res.status(400).json({ message: 'incomplete information' })
     }
 
     const newRoom = await RoomModel.create({
+      room_id: uuidv4().slice(0, 8),
       owner_created: user.user_id,
       unavailableDates: [],
       ...req.body
@@ -57,6 +59,21 @@ const getRoomById = async (req, res) => {
   }
 }
 
+// get avilable room
+// const avilableRoom = async (req, res) => {
+//   try {
+//     const roomID = await RoomModel.find({ status: { $eq: false } }).exec()
+//     if (!roomID) {
+//       return res
+//         .status(204)
+//         .json({ message: 'No room is avilable' })
+//     }
+
+//     res.status(200).json(roomID)
+//   } catch (error) {
+//     console.log(`Error in getroombyid : ${error}`)
+//   }
+// }
 // patch
 // delete
 

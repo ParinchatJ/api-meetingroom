@@ -14,4 +14,6 @@ roomRoute.get('/all', roomController.getAllRoom)
 
 roomRoute.get('/:id', roomController.getRoomById)
 
+// roomRoute.get('/available', roomController.avilableRoom)
+
 module.exports = roomRoute
