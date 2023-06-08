@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
             username: user.username
           })
         } else {
-          res.status(401).json({ meaasge: 'Password is incorrect' })
+          res.status(401).json({ meaasge: `Password is incorrect (error: ${err})` })
         }
       })
     } else {
