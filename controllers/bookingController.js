@@ -18,6 +18,7 @@ const bookingmtroom = async (req, res) => {
     user_id: req.user.user_id
   })
 
+  // use room_selectedID
   if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'
@@ -59,6 +60,7 @@ const bookingCancel = async (req, res) => {
     user_id: req.user.user_id
   })
 
+  // use room_selectedID
   if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'

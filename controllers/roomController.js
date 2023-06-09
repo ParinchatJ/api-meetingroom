@@ -40,6 +40,7 @@ const getAllRoom = async (req, res) => {
 // Get one room by ID
 const getRoomById = async (req, res) => {
   try {
+    // use _id
     if (!req?.params?.id) {
       return res.status(400).json({
         message: 'ID parameter is required.'
