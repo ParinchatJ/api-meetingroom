@@ -37,6 +37,29 @@ const getAllRoom = async (req, res) => {
   }
 }
 
+// get one
+const getRoomById = async (req, res) => {
+  try {
+    if (!req?.params?.id) {
+      return res.status(400).json({
+        message: 'ID parameter is required.'
+      })
+    }
+
+    const roomID = await RoomModel.findOne({ _id: req.params.id }).exec()
+    // cant find ID match
+    if (!roomID) {
+      return res
+        .status(204)
+        .json({ message: `No Post match ID ${req.params.id}.` })
+    }
+
+    res.status(200).json(roomID)
+  } catch (error) {
+    console.log(`Error in getroombyid : ${error}`)
+  }
+}
+
 // get avilable room
 const avilableRoom = async (req, res) => {
   try {
@@ -62,5 +85,6 @@ const avilableRoom = async (req, res) => {
 module.exports = {
   createRoom,
   getAllRoom,
-  avilableRoom
+  avilableRoom,
+  getRoomById
 }

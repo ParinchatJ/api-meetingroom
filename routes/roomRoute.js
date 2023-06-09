@@ -12,7 +12,7 @@ roomRoute.post('/create', isAdminCheck, roomController.createRoom)
 
 roomRoute.get('/all', roomController.getAllRoom)
 
-// roomRoute.get('/:id', roomController.getRoomById)
+roomRoute.get('/:id', roomController.getRoomById)
 
 roomRoute.post('/available', roomController.avilableRoom)
 
