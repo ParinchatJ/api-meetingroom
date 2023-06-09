@@ -1,7 +1,6 @@
 const UserModel = require('../models/userModel')
 const RoomModel = require('../models/roomModel')
 const BookingModel = require('../models/bookingModel')
-const dayjs = require('dayjs')
 
 // Get all booking
 const getAllBooking = async (req, res) => {
