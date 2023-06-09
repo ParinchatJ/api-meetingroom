@@ -1,6 +1,6 @@
 const UserModel = require('../models/userModel')
 const RoomModel = require('../models/roomModel')
-const bookingModel = require('../models/bookingModel')
+const BookingModel = require('../models/bookingModel')
 const { v4: uuidv4 } = require('uuid')
 
 // Post new room
@@ -64,18 +64,24 @@ const getRoomById = async (req, res) => {
 // Get avilable room
 const avilableRoom = async (req, res) => {
   try {
+    // const tempObj = {}
+    let roomList = ''
+
     // query room is avilable
-    const booking = await bookingModel.find({
+    const notAvilable = await BookingModel.find({
       $or: [
-        { range_time: { $gt: req.body.range_time }},
-        { range_time: { $lt: req.body.range_time }}
+        { range_time: { $eq: req.body.range_time } }
       ],
       date: req.body.date
     })
-      .sort([['room_name', -1]])
 
-    console.log(booking)
-    res.status(200).json(booking)
+    // push room to roomList
+    for (let i of notAvilable) {
+      roomList += i
+    }
+
+    const avilable = await RoomModel.find({ room_name: { $ne: roomList.room_selected } })
+    res.status(200).json(avilable)
   } catch (error) {
     console.log(`Error in avilableRoom : ${error}`)
   }

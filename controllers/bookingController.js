@@ -1,6 +1,7 @@
 const UserModel = require('../models/userModel')
 const RoomModel = require('../models/roomModel')
 const BookingModel = require('../models/bookingModel')
+const dayjs = require('dayjs')
 
 // Get all booking
 const getAllBooking = async (req, res) => {
@@ -16,6 +17,11 @@ const getAllBooking = async (req, res) => {
 const bookingmtroom = async (req, res) => {
   const user = await UserModel.findOne({
     user_id: req.user.user_id
+  })
+
+  const booking = await BookingModel.find({
+    range_time: req.body.range_time,
+    date: req.body.date
   })
 
   // use room_selectedID
@@ -40,15 +46,18 @@ const bookingmtroom = async (req, res) => {
       return res.status(400).json({ message: 'incomplete information' })
     }
 
-    const newBooking = await BookingModel.create({
-      owner: user.user_id,
-      room_selected: roomID.room_name,
-      room_selectedID: roomID._id,
-      ...req.body
-    })
-
-    res.status(200).json(newBooking)
-
+    // check date and time is not equal
+    if (Object.keys(booking).length === 0) {
+      const newBooking = await BookingModel.create({
+        owner: user.user_id,
+        room_selected: roomID.room_name,
+        room_selectedID: roomID._id,
+        ...req.body
+      })
+      res.status(200).json(newBooking)
+    } else {
+      return res.status(400).json({ message: 'This room in time is Unavilable! pls booking another room' })
+    }
   } catch (error) {
     console.log(`Error in create booking : ${error}`)
   }
