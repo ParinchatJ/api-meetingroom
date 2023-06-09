@@ -1,5 +1,6 @@
 const UserModel = require('../models/userModel')
 
+// Check permission admin
 const isAdminCheck = async (req, res, next) => {
   const user = await UserModel.findOne({
     user_id: req.user.user_id

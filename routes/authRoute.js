@@ -1,11 +1,11 @@
 const express = require('express')
 const authRoute = express.Router()
 
-// register
+// Register
 const userController = require('../controllers/authController')
 authRoute.post('/register', userController.createUser)
 
-// login
+// Login
 authRoute.post('/login', userController.loginUser)
 
 module.exports = authRoute

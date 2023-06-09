@@ -4,7 +4,7 @@ const config = require('./config/config')
 
 const appStart = async () => {
   try {
-    // connect mongoose
+    // Connect mongoose
     await mongoose
       .connect(config.mongoDB.URI, {
         useNewUrlParser: true
@@ -16,7 +16,7 @@ const appStart = async () => {
         console.log(`MongoDB is ERROR! : ${err}`)
       })
 
-    // connect port
+    // Connect port
     await app.listen(config.port, (err) => {
       if (err) {
         return console.log(`ERROR connect PORT : ${err}`)

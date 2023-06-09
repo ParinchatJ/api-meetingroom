@@ -3,7 +3,7 @@ const RoomModel = require('../models/roomModel')
 const bookingModel = require('../models/bookingModel')
 const { v4: uuidv4 } = require('uuid')
 
-// post
+// Post new room
 const createRoom = async (req, res) => {
   try {
     const user = await UserModel.findOne({
@@ -27,7 +27,7 @@ const createRoom = async (req, res) => {
   }
 }
 
-// get all
+// Get all room
 const getAllRoom = async (req, res) => {
   try {
     const allRoom = await RoomModel.find().sort([['room_name', 1]]) // name sort
@@ -37,7 +37,7 @@ const getAllRoom = async (req, res) => {
   }
 }
 
-// get one
+// Get one room by ID
 const getRoomById = async (req, res) => {
   try {
     if (!req?.params?.id) {
@@ -60,7 +60,7 @@ const getRoomById = async (req, res) => {
   }
 }
 
-// get avilable room
+// Get avilable room
 const avilableRoom = async (req, res) => {
   try {
     // query room is avilable
@@ -79,8 +79,6 @@ const avilableRoom = async (req, res) => {
     console.log(`Error in avilableRoom : ${error}`)
   }
 }
-// patch
-// delete
 
 module.exports = {
   createRoom,

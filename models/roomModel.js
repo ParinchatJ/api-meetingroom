@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const roomSchema = new mongoose.Schema({
+const RoomSchema = new mongoose.Schema({
   owner_created: {
     type: String
   },
@@ -17,4 +17,4 @@ const roomSchema = new mongoose.Schema({
   }
 })
 
-module.exports = new mongoose.model('createRoom', roomSchema)
+module.exports = new mongoose.model('createRoom', RoomSchema)

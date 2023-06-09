@@ -8,7 +8,6 @@ The API booking a meeting room that can authentication, authorization, manage a 
 * `ExpressJS` *as Node web framework*
 * `MongoDB` *NoSQL database*
 * `Mongoose` *to create the database connection*
-* `dayJS` *to config DATE data pattern*
 * `bcryptjs` *for create password encryption*
 * `express-session` *to create session*
 * `uuid` *to generate id number*
@@ -31,7 +30,6 @@ API การจองห้องประชุม มีการทำงา
 * `ExpressJS` *จัดการการเขียน API ให้ง่ายขึ้น เป็น framework ของ nodeJS*
 * `MongoDB` *ฐานข้อมูลที่ไม่มีความสัมพันธ์ตาราง*
 * `Mongoose` *เชื่อมต่อฐานข้อมูล*
-* `dayJS` *สร้างรูปแบบของวันและเวลา*
 * `bcryptjs` *สร้างรหัสผ่านแบบเข้ารหัส*
 * `express-session` *สร้าง session ใช้งาน*
 * `uuid` *สร้างเลข ID เพื่อใช้งาน*

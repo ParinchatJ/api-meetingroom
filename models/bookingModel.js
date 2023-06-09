@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const bookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
   owner: {
     type: String
   },
@@ -23,4 +23,4 @@ const bookingSchema = new mongoose.Schema({
   }
 })
 
-module.exports = new mongoose.model('booking', bookingSchema)
+module.exports = new mongoose.model('booking', BookingSchema)

@@ -1,17 +1,17 @@
 const express = require('express')
 const ms = require('ms')
 const config = require('../config/config')
-const MongoStore = require('connect-mongo')
 
 const app = express()
 
-// cookie
+// Cookie
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
 app.set('trust proxy', 1)
 
-// session
+// Session
 const session = require('express-session')
+const MongoStore = require('connect-mongo')
 app.use(session({
   resave: false,
   secret: config.secretKey,
@@ -22,28 +22,25 @@ app.use(session({
     httpOnly: true
   },
   store: MongoStore.create({
-    mongoUrl: config.mongoDB.URI,
-    collectionName: 'sessions',
-    stringify: false,
-    autoRemove: 'native'
+    mongoUrl: config.mongoDB.URI
   })
 }))
 
-// json parser
+// Json parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// routes
-// authRoute
+// Routes
+// AuthRoute
 const authRoute = require('../routes/authRoute')
 app.use('/auth', authRoute)
 
-// roomRoute
+// RoomRoute
 const roomRoute = require('../routes/roomRoute')
 app.use('/room', roomRoute)
 
-// bookingRoute
+// BookingRoute
 const bookingRoute = require('../routes/bookingRoute')
 app.use('/booking', bookingRoute)
 

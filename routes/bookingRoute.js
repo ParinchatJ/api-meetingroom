@@ -1,19 +1,18 @@
 const express = require('express')
 const bookingRoute = express.Router()
 
-// middleware check session and admin
+// Middleware check session and admin
 const authSession = require('../middleware/mustLogin')
 bookingRoute.use(authSession)
 
 const bookingController = require('../controllers/bookingController')
-
-// show booking all
+// Show booking all
 bookingRoute.get('/all', bookingController.getAllBooking)
 
-// booking room
+// Booking room
 bookingRoute.post('/:roomId', bookingController.bookingmtroom)
 
-// cancel room
+// Cancel room
 bookingRoute.delete('/:roomId', bookingController.bookingCancel)
 
 module.exports = bookingRoute

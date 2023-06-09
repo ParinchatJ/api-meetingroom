@@ -1,6 +1,6 @@
 const UserModel = require('../models/userModel')
 
-// check permission
+// Check permission
 const authSession = async (req, res, next) => {
   // user is not logged in
   if (!req.session.user_id) return res.status(401).json({ message: 'You dont have permission to access1' })
