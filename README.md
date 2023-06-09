@@ -15,7 +15,7 @@ The API booking a meeting room that can authentication, authorization, manage a 
 
 ## Basic Function
 
-- [x] authentication : Login, register using by express-session, cookie-parser
-- [x] manage a meeting room (only admin) : **(1)** create room only by admin (using middleware to check admin and have login) **(2)** Get all room **(3)** Get one room by ID
-- [x] Booking a meeting room : **(1)** Get avilable room **(2)** Booking
-- [x] Booking cancel
+- [x] **authentication** : Login, register using by express-session, cookie-parser
+- [x] **manage a meeting room (only admin)** : **(1)** create room only by admin (using middleware to check admin and have login) **(2)** Get all room **(3)** Get one room by ID
+- [x] **Booking a meeting room** : **(1)** Get avilable room **(2)** Booking
+- [x] **Booking cancel**
