@@ -63,25 +63,21 @@ const getRoomById = async (req, res) => {
 
 // Get avilable room
 const avilableRoom = async (req, res) => {
+  // * find range_time and time in BookingDB match req.body => Are the range_time + time being create?
+  const booking = await BookingModel.find({
+    range_time: req.body.range_time,
+    date: req.body.date
+  })
+
   try {
-    // const tempObj = {}
-    let roomList = ''
-
-    // query room is avilable
-    const notAvilable = await BookingModel.find({
-      $or: [
-        { range_time: { $eq: req.body.range_time } }
-      ],
-      date: req.body.date
-    })
-
-    // push room to roomList
-    for (let i of notAvilable) {
-      roomList += i
+    // ? if range_time and time is not find in req.body
+    if (!req.body.range_time & !req.body.time) {
+      return res.status(400).json({ message: 'incomplete information' })
     }
 
-    const avilable = await RoomModel.find({ room_name: { $ne: roomList.room_selected } })
-    res.status(200).json(avilable)
+
+
+    console.log(...booking)
   } catch (error) {
     console.log(`Error in avilableRoom : ${error}`)
   }

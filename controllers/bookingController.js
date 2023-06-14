@@ -5,7 +5,7 @@ const BookingModel = require('../models/bookingModel')
 // Get all booking
 const getAllBooking = async (req, res) => {
   try {
-    const allbooking = await BookingModel.find().sort([['date', -1]]) // name sort
+    const allbooking = await BookingModel.find().sort([['date', -1]]) // today
     res.status(200).json(allbooking)
   } catch (error) {
     console.log(`Error in getallbooking : ${error}`)
@@ -14,39 +14,44 @@ const getAllBooking = async (req, res) => {
 
 // Create booking
 const bookingmtroom = async (req, res) => {
+  // * find user_id in UserDB = user_id (pass in session)
   const user = await UserModel.findOne({
     user_id: req.user.user_id
   })
 
-  const booking = await BookingModel.find({
-    range_time: req.body.range_time,
-    date: req.body.date
-  })
-
   // use room_selectedID
+  // ? if dont have params.roomId
   if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'
     })
   }
+  // * find id room in req.params to booking
+  const roomID = await RoomModel.findOne({ _id: req.params.roomId }).exec()
+  // ? cant find ID match
+  if (!roomID) {
+    return res
+      .status(204)
+      .json({ message: `No Post match ID ${req.params.roomId}.` })
+  }
+
+  // * find roomID is discovered in time and range_time ?
+  const roomBook = await BookingModel.findOne({
+    room_selectedID: roomID._id,
+    range_time: req.body.range_time,
+    date: req.body.date
+  })
+
+  // console.log(roomID)
 
   try {
-    // find id room to booking
-    const roomID = await RoomModel.findOne({ _id: req.params.roomId }).exec()
-    // cant find ID match
-    if (!roomID) {
-      return res
-        .status(204)
-        .json({ message: `No Post match ID ${req.params.roomId}.` })
-    }
-
-    // booking
-    if (!req.body.range_time) {
+    // ? if range_time and time is not find in req.body
+    if (!req.body.range_time & !req.body.time) {
       return res.status(400).json({ message: 'incomplete information' })
     }
 
-    // check date and time is not equal
-    if (Object.keys(booking).length === 0) {
+    // * check if roomBook = null
+    if (roomBook === null) {
       const newBooking = await BookingModel.create({
         owner: user.user_id,
         room_selected: roomID.room_name,
@@ -64,11 +69,12 @@ const bookingmtroom = async (req, res) => {
 
 // Cancel booking
 const bookingCancel = async (req, res) => {
+  // * find user_id in UserDB = user_id (pass in session)
   const user = await UserModel.findOne({
     user_id: req.user.user_id
   })
 
-  // use room_selectedID
+  // ? if dont have params.roomId
   if (!req?.params?.roomId) {
     return res.status(400).json({
       message: 'ID parameter is required.'
@@ -76,12 +82,14 @@ const bookingCancel = async (req, res) => {
   }
 
   try {
-    // delete
+    // * find room_selected in BookingModel is match req.params?
     const booking = await BookingModel.findOne({ room_selectedID: req.params.roomId })
+    // ? ckeck if booking.owner is not match user.user_id => user cant delete bc is not your post
     if (booking.owner !== user.user_id) {
       res.status(401).json({ message: 'Its not your post. Cant cancel!' })
     }
 
+    // * delete roomm_selectedID in BookingDB that match req.params.roomId (that room)
     await BookingModel.deleteOne({ room_selectedID: req.params.roomId })
     res.status(200).json({ message: 'Room has been deleted' })
   } catch (error) {
