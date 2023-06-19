@@ -42,7 +42,7 @@ const bookingmtroom = async (req, res) => {
     date: req.body.date
   })
 
-  // console.log(roomID)
+  console.log(roomID)
 
   try {
     // ? if range_time and time is not find in req.body

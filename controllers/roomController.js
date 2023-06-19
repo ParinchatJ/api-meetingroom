@@ -54,7 +54,6 @@ const getRoomById = async (req, res) => {
         .status(204)
         .json({ message: `No Post match ID ${req.params.id}.` })
     }
-
     res.status(200).json(roomID)
   } catch (error) {
     console.log(`Error in getroombyid : ${error}`)
@@ -67,17 +66,53 @@ const avilableRoom = async (req, res) => {
   const booking = await BookingModel.find({
     range_time: req.body.range_time,
     date: req.body.date
-  })
+  }).sort([['room_selected', 1]])
 
+  const findAllRoom = await RoomModel.find().sort([['room_name', 1]])
+
+  // ? if range_time and time is not find in req.body
+  if (!req.body.range_time && !req.body.time) {
+    return res.status(400).json({ message: 'incomplete information' })
+  }
   try {
-    // ? if range_time and time is not find in req.body
-    if (!req.body.range_time & !req.body.time) {
-      return res.status(400).json({ message: 'incomplete information' })
+    // ! Check all room is avalible
+    // * check if booking is not match time and range_time => every room is avilable
+    if (Object.keys(booking).length === 0) {
+      res.status(200).json(findAllRoom)
+    // * every room is unavilable
+    } else {
+      // ! Check have some room is avalible
+      let bookingCheck = []
+      let roomCheck = []
+      let checkunavalibleRoom = ''
+
+      // * convert object to array
+      booking.forEach(book => {
+        bookingCheck.push(book.room_selected)
+      })
+
+      findAllRoom.forEach(room => {
+        roomCheck.push(room.room_name)
+      })
+
+      // * Check Unavalible room
+      if (roomCheck.length === bookingCheck.length) {
+        for (let i = 0; i < roomCheck.length; i++) {
+          if (roomCheck[i] !== bookingCheck[i]) checkunavalibleRoom += 'false'
+        }
+        checkunavalibleRoom += 'true'
+      } else {
+        checkunavalibleRoom += 'false'
+      }
+
+      // * Check diffrence room -> find SOME room is avalible
+      const differenceRoomCheck = roomCheck.filter(x => !bookingCheck.includes(x))
+
+      if (checkunavalibleRoom === 'true') {
+        res.status(200).json({ message: 'All room is UNAVALIBLE ' })
+      }
+      res.status(200).json({ ...differenceRoomCheck })
     }
-
-
-
-    console.log(...booking)
   } catch (error) {
     console.log(`Error in avilableRoom : ${error}`)
   }
