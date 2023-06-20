@@ -74,28 +74,30 @@ const avilableRoom = async (req, res) => {
   if (!req.body.range_time && !req.body.time) {
     return res.status(400).json({ message: 'incomplete information' })
   }
+
+  // * convert object to array
+  const bookingCheck = []
+  const roomCheck = []
+
+  booking.forEach(book => {
+    bookingCheck.push(book.room_selected)
+  })
+
+  findAllRoom.forEach(room => {
+    roomCheck.push(room.room_name)
+  })
+
   try {
-    // ! Check all room is avalible
+    // ! Check total room is avalible
     // * check if booking is not match time and range_time => every room is avilable
     if (Object.keys(booking).length === 0) {
-      res.status(200).json(findAllRoom)
+      res.status(200).json({ ...roomCheck })
     // * every room is unavilable
     } else {
       // ! Check have some room is avalible
-      let bookingCheck = []
-      let roomCheck = []
       let checkunavalibleRoom = ''
 
-      // * convert object to array
-      booking.forEach(book => {
-        bookingCheck.push(book.room_selected)
-      })
-
-      findAllRoom.forEach(room => {
-        roomCheck.push(room.room_name)
-      })
-
-      // * Check Unavalible room
+      // ! Check dont have room is avalible
       if (roomCheck.length === bookingCheck.length) {
         for (let i = 0; i < roomCheck.length; i++) {
           if (roomCheck[i] !== bookingCheck[i]) checkunavalibleRoom += 'false'
